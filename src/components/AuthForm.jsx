@@ -1,7 +1,7 @@
 // src/components/AuthForm.jsx
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextInput, Notification } from '@mantine/core';
+import { TextInput } from '@mantine/core';
 import { registerWithEmail, loginWithEmail, loginWithGoogle } from '../auth';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
