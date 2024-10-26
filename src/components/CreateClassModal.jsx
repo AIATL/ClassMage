@@ -8,8 +8,10 @@ const CreateClassModal = () => {
             <Modal opened={opened} onClose={close}>
                 Hi Everyone
             </Modal>
-
-            <Button onClick={open}>Create Class</Button>
+            {/* Add Class Option */}
+            <Button className="flex flex-col items-center justify-center w-[250px] h-[150px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer" onClick={open}>
+                <h3 className="text-white text-2xl font-bold">Add Class</h3>
+            </Button>
         </>
     );
 };

@@ -2,12 +2,13 @@
 import { Notifications } from "@mantine/notifications";
 import { useContext } from "react";
 import { UserContext } from "../App";
-import { Link } from "react-router-dom";
+import { logout } from "../auth";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mantine/core";
 
 const HeaderFooter = ({ children }) => {
     const { user, setUser } = useContext(UserContext)
-
+    const navigate = useNavigate();
     const handleLogout = async () => {
         try {
             await logout();

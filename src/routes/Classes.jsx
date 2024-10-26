@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { Button } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
-import { logout } from "../auth";
 import FileUpload from "../components/FileUpload";
 import loginPhoto from "../assets/loginphoto.avif";
 import HeaderFooter from "../components/HeaderFooter";
@@ -44,10 +43,7 @@ function Classes() {
                         </Link>
                     ))}
                     
-                    {/* Add Class Option */}
-                    <div className="flex flex-col items-center justify-center w-[250px] h-[150px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer" onClick={handleAddClass}>
-                        <h3 className="text-white text-2xl font-bold">Add Class</h3>
-                    </div>
+
                     <CreateClassModal />
                 </div>
             </div>
