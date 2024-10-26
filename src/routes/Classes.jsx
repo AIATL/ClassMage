@@ -1,4 +1,3 @@
-// src/routes/Classes.jsx
 import React, { useContext, useState } from 'react';
 import { Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
