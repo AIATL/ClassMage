@@ -6,8 +6,8 @@ import { registerWithEmail, loginWithEmail, loginWithGoogle } from '../auth';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
 import { UserContext } from '../App';
-import loginPhoto from '../assets/loginphoto.avif';
-import mageHatIcon from '../assets/Magehat1.png';
+import mageHatIcon from "./../assets/MageHat1.png"
+import loginPhoto from "./../assets/loginphoto.avif"
 
 function AuthForm() {
   const [email, setEmail] = useState('');
