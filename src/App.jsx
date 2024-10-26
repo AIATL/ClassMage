@@ -6,7 +6,6 @@ import AuthForm from "./routes/AuthForm";
 import Classes from "./routes/Classes";
 import ClassResourceManagement from "./routes/ClassResourceManagement";
 import { createContext, useState } from "react";
-import "./App.css";
 
 const theme = createTheme({});
 export const UserContext = createContext();
