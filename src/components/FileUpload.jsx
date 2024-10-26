@@ -1,25 +1,12 @@
-// src/SuccessPage.jsx
-import React, { useState, useContext } from 'react';
+// src/components/FileUpload.jsx
+import React, { useState } from 'react';
 import { Button, FileInput, Notification } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from './App';
-import { logout, uploadFile } from './auth';
+import { uploadFile } from '../auth';
 
-function SuccessPage() {
-  const { user, setUser } = useContext(UserContext); // Access the authenticated user from context
+function FileUpload() {
+
   const [file, setFile] = useState(null);
   const [fileUploadMessage, setFileUploadMessage] = useState('');
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      setUser(null);
-      navigate('/');
-    } catch (error) {
-      setFileUploadMessage(`Logout failed: ${error.message}`);
-    }
-  };
 
   const handleFileUpload = async () => {
     setFileUploadMessage('');
@@ -33,11 +20,6 @@ function SuccessPage() {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1>Welcome, {user?.email}</h1>
-      <p>Your account has been successfully created and verified.</p>
-
-      <Button onClick={handleLogout}>Log Out</Button>
-
       <h2>Upload a File</h2>
       <FileInput 
         placeholder="Choose a file" 
@@ -51,4 +33,4 @@ function SuccessPage() {
   );
 }
 
-export default SuccessPage;
+export default FileUpload;

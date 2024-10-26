@@ -38,17 +38,10 @@ export const loginWithEmail = async (email, password) => {
 };
 
 // Log in with Google, checking for existing email/password account
-export const loginWithGoogle = async (email) => {
-  const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-
-  if (signInMethods.includes('password') && !signInMethods.includes('google.com')) {
-    throw new Error('This email is registered with a password. Please use email/password sign-in.');
-  }
-
+export const loginWithGoogle = async () => {
   const result = await signInWithPopup(auth, googleProvider);
   return result.user;
 };
-
 // Upload file to Firebase Storage
 export const uploadFile = async (file) => {
   if (!auth.currentUser) {
