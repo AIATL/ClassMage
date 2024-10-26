@@ -7,6 +7,7 @@ import Classes from "./routes/Classes";
 import "./App.css";
 import "@mantine/notifications/styles.css";
 import ClassResourceManagement from "./routes/ClassReasourceManagmenet";
+import ChatPage from "./routes/ChatPage";
 
 const theme = createTheme({});
 export const UserContext = createContext();
@@ -29,6 +30,7 @@ function App() {
                             path="/classes/:classId"
                             element={<ClassResourceManagement />}
                         />
+                        <Route path="/chatpage/:classId" element={<ChatPage />} />
                     </Routes>
                 </Router>
             </UserContext.Provider>
