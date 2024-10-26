@@ -25,13 +25,13 @@ function Classes() {
                 <div className="w-full flex flex-wrap gap-8 justify-center items-start">
                     {/* Display Existing Classes */}
                     {classes.map((cls) => (
-                        <Link to={"/classes/" + cls.name} key={cls.id} className="flex flex-col w-[250px] h-[150px] bg-[#bab6bf] rounded-lg shadow-lg p-4">
+                        <div key={cls.id} className="flex flex-col w-[250px] bg-[#bab6bf] rounded-lg shadow-lg p-4">
                             <h3 className="text-center text-2xl font-bold text-[#6c3adb]">{cls.name}</h3>
-                            <div className="flex justify-between mt-4">
-                                <Button color="dark" onClick={() => {}}>Edit Content</Button>
+                            <div className="mt-4">
+                                <Button className="m-auto mb-2" color="dark" onClick={() => {navigate("/classes/") + cls.name}} >Edit Grounding Content</Button>
                                 <Button color="red" onClick={() => handleDeleteClass(cls.id)}>Delete</Button>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                     
 

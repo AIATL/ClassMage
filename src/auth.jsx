@@ -11,6 +11,7 @@ import {
 } from './firebase';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
+import { getFirestore } from "firebase/firestore";
 
 // Sign up with email and password, then send verification email
 export const registerWithEmail = async (email, password) => {

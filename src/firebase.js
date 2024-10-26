@@ -12,6 +12,7 @@ import {
   fetchSignInMethodsForEmail 
 } from "firebase/auth";
 import { getStorage } from "firebase/storage"; // Import Firebase Storage
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -28,6 +29,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const storage = getStorage(app); // Initialize Firebase Storage
+const db = getFirestore(app);
 
 export { 
     app, 
@@ -40,5 +42,6 @@ export {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     sendEmailVerification, 
-    fetchSignInMethodsForEmail 
+    fetchSignInMethodsForEmail,
+    db,
 };
