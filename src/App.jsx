@@ -4,11 +4,11 @@ import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications"; // Use Notifications instead of NotificationsProvider
 import AuthForm from "./routes/AuthForm";
 import Classes from "./routes/Classes";
-import "./App.css";
 import "@mantine/notifications/styles.css";
 import ChatPage from "./routes/ChatPage";
 import { createContext, useState } from "react";
 import ClassResourceManagement from "./routes/ClassResourceManagement";
+import '@mantine/core/styles.css';
 
 const theme = createTheme({});
 export const UserContext = createContext();
