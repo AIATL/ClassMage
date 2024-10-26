@@ -6,6 +6,8 @@ import AuthForm from './components/AuthForm';
 import { createContext, useState } from 'react';
 import Classes from './routes/Classes';
 import "./App.css"
+import ClassResourceManagement from './routes/ClassReasourceManagmenet';
+import '@mantine/notifications/styles.css';
 
 const theme = createTheme({});
 export const UserContext = createContext();
@@ -25,7 +27,7 @@ function App() {
             <Route path="/" element={<AuthForm />} />
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/classes" element={<Classes />} />
-
+            <Route path="/classes/:classId" element={<ClassResourceManagement />} />
           </Routes>
         </Router>
       </UserContext.Provider>
