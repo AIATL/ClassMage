@@ -4,6 +4,7 @@ import { Button, FileInput, Notification } from '@mantine/core';
 import { uploadFile } from '../auth';
 
 function FileUpload() {
+
   const [file, setFile] = useState(null);
   const [fileUploadMessage, setFileUploadMessage] = useState('');
 
