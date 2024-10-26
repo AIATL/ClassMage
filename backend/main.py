@@ -1,7 +1,7 @@
 from vertexai.preview import rag
 from vertexai.preview.generative_models import GenerativeModel, Tool
 import vertexai
-import re
+import json
 
 # Create a RAG Corpus, Import Files, and Generate a response
 
@@ -102,7 +102,7 @@ def updateRagFiles(name):
 #     )
 #     print(f"dir {response}")
 
-def askRagQuestion(name, query):
+def askRagQuestion(name, query, priorqueries):
     rag_corpus = ragLookUp[name]
     # Enhance generation
     # Create a RAG retrieval tool
@@ -125,11 +125,14 @@ def askRagQuestion(name, query):
     rag_model = GenerativeModel(
         model_name="gemini-1.5-flash-001", tools=[rag_retrieval_tool]
     )
-
-    # Generate response
-    response = rag_model.generate_content(query)
-    # sources = rag_model.
-    print(f"grounding metadat")
+    try:
+        with open(priorqueries, "r") as f:
+            priorqueries = json.load(f)
+            final = json.dumps(priorqueries, indent=4)
+    except:
+        final = priorqueries
+    query_final = "You are a tutor for a class that I am a student of. This is the list of prior questions that I have asked: \n" + final + "\n use these prior questions as context and do not bring up that i've asked you anything before unless necessary to make the answer to the current question clearer: " + query + "\nExpand on this question with as clear of an explanation as possible while not repeating yourself but give an example or two if it will make the concept clearer."
+    response = rag_model.generate_content(query_final)
     sources = response.to_dict()["candidates"][0]["grounding_metadata"]["grounding_chunks"][0]["retrieved_context"]["uri"]
     return response, sources
 
