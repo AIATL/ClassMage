@@ -9,6 +9,7 @@ import "./App.css";
 import "@mantine/notifications/styles.css";
 import ClassResourceManagement from "./routes/ClassReasourceManagmenet";
 import HeaderFooter from "./components/HeaderFooter";
+import { createContext, useState } from 'react';
 
 const theme = createTheme({});
 export const UserContext = createContext();
@@ -39,6 +40,19 @@ function App() {
             </UserContext.Provider>
         </MantineProvider>
     );
+
+  return (
+    <MantineProvider theme={theme}>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<AuthForm />} />
+            <Route path="/classes" element={<Classes />} />
+          </Routes>
+        </Router>
+      </UserContext.Provider>
+    </MantineProvider>
+  );
 }
 
 export default App;
