@@ -6,9 +6,9 @@ import AuthForm from "./routes/AuthForm";
 import Classes from "./routes/Classes";
 import "./App.css";
 import "@mantine/notifications/styles.css";
-import ClassResourceManagement from "./routes/ClassReasourceManagmenet";
 import ChatPage from "./routes/ChatPage";
 import { createContext, useState } from "react";
+import ClassResourceManagement from "./routes/ClassResourceManagement";
 
 const theme = createTheme({});
 export const UserContext = createContext();
