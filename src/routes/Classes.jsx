@@ -6,6 +6,7 @@ import { logout } from "../auth";
 import FileUpload from "../components/FileUpload";
 import loginPhoto from "../assets/loginphoto.avif";
 import HeaderFooter from "../components/HeaderFooter";
+import CreateClassModal from "../components/CreateClassModal";
 
 function Classes() {
     const { user, setUser } = useContext(UserContext);
@@ -37,20 +38,6 @@ function Classes() {
     return (
         <HeaderFooter>
             <div className="MyClassesPage w-[1440px] h-[1024px] relative bg-white">
-                <img
-                    className="Rectangle28 w-[650px] h-[75px] left-0 top-0 absolute"
-                    src={loginPhoto}
-                    alt="Header Decoration"
-                />
-                <div className="Rectangle29 w-[650px] h-[75px] left-0 top-0 absolute bg-gradient-to-r from-white to-[#6c3adb]" />
-                <div className="Rectangle26 w-[790px] h-[75px] left-[650px] top-0 absolute bg-[#6c3adb]" />
-
-                <div
-                    className="LogOut w-[167px] h-16 left-[1273px] top-[23px] absolute text-white text-[32px] font-bold font-['Poppins'] leading-loose cursor-pointer"
-                    onClick={handleLogout}
-                >
-                    LOG OUT
-                </div>
 
                 <div className="MyClasses w-[398px] h-[65px] left-[539px] top-[111px] absolute text-center text-[#6e6e6e] text-[64px] font-bold font-['Poppins'] leading-[64px]">
                     MY CLASSES
@@ -90,8 +77,8 @@ function Classes() {
                             Add Class
                         </div>
                     </div>
+                    <CreateClassModal />
                 </div>
-
 
             </div>
         </HeaderFooter>
