@@ -25,7 +25,6 @@ async def ask_question(ragname: str, query: str, prior_queries):
         print(e)
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
-        print(e)
-        raise HTTPException(status_code=500, detail=str(e))
+        return "Could not locate the answer to your query in class notes. Please ensure that the query is on topic."
 
 
