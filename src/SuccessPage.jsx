@@ -1,38 +1,52 @@
 // src/SuccessPage.jsx
-import React, { useEffect, useState } from 'react';
-import { Button } from '@mantine/core';
+import React, { useState, useContext } from 'react';
+import { Button, FileInput, Notification } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
-import { logout } from './auth';
+import { UserContext } from './App';
+import { logout, uploadFile } from './auth';
 
 function SuccessPage() {
-  const [user, setUser] = useState(null); // Track signed-in user
+  const { user, setUser } = useContext(UserContext); // Access the authenticated user from context
+  const [file, setFile] = useState(null);
+  const [fileUploadMessage, setFileUploadMessage] = useState('');
   const navigate = useNavigate();
 
-  // Monitor authentication state
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser); // Set the user if logged in
-      } else {
-        setUser(null); // Clear user state if logged out
-        navigate('/'); // Redirect to login if logged out
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
-
   const handleLogout = async () => {
-    await logout();
-    navigate('/'); // Redirect to login page after logout
+    try {
+      await logout();
+      setUser(null);
+      navigate('/');
+    } catch (error) {
+      setFileUploadMessage(`Logout failed: ${error.message}`);
+    }
+  };
+
+  const handleFileUpload = async () => {
+    setFileUploadMessage('');
+    try {
+      const fileURL = await uploadFile(file); // Upload file to Firebase Storage
+      setFileUploadMessage(`File uploaded successfully! File URL: ${fileURL}`);
+    } catch (error) {
+      setFileUploadMessage(`File upload failed: ${error.message}`);
+    }
   };
 
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1>Sign-Up Successful</h1>
+      <h1>Welcome, {user?.email}</h1>
       <p>Your account has been successfully created and verified.</p>
-      {user && <Button onClick={handleLogout}>Log Out</Button>} {/* Show Log Out button if user is logged in */}
+
+      <Button onClick={handleLogout}>Log Out</Button>
+
+      <h2>Upload a File</h2>
+      <FileInput 
+        placeholder="Choose a file" 
+        value={file} 
+        onChange={setFile} 
+        required 
+      />
+      <Button onClick={handleFileUpload} disabled={!file}>Upload File</Button>
+      {fileUploadMessage && <Notification color="blue">{fileUploadMessage}</Notification>}
     </div>
   );
 }
