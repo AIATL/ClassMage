@@ -1,14 +1,13 @@
 // src/SuccessPage.jsx
-import React, { useState, useContext } from 'react';
-import { Button, FileInput, Notification } from '@mantine/core';
+import React, { useContext } from 'react';
+import { Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './App';
-import { logout, uploadFile } from './auth';
+import { logout } from './auth';
+import FileUpload from './components/FileUpload';
 
 function SuccessPage() {
-  const { user, setUser } = useContext(UserContext); // Access the authenticated user from context
-  const [file, setFile] = useState(null);
-  const [fileUploadMessage, setFileUploadMessage] = useState('');
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -17,17 +16,7 @@ function SuccessPage() {
       setUser(null);
       navigate('/');
     } catch (error) {
-      setFileUploadMessage(`Logout failed: ${error.message}`);
-    }
-  };
-
-  const handleFileUpload = async () => {
-    setFileUploadMessage('');
-    try {
-      const fileURL = await uploadFile(file); // Upload file to Firebase Storage
-      setFileUploadMessage(`File uploaded successfully! File URL: ${fileURL}`);
-    } catch (error) {
-      setFileUploadMessage(`File upload failed: ${error.message}`);
+      console.error(`Logout failed: ${error.message}`);
     }
   };
 
@@ -38,15 +27,8 @@ function SuccessPage() {
 
       <Button onClick={handleLogout}>Log Out</Button>
 
-      <h2>Upload a File</h2>
-      <FileInput 
-        placeholder="Choose a file" 
-        value={file} 
-        onChange={setFile} 
-        required 
-      />
-      <Button onClick={handleFileUpload} disabled={!file}>Upload File</Button>
-      {fileUploadMessage && <Notification color="blue">{fileUploadMessage}</Notification>}
+      {/* FileUpload Component */}
+      <FileUpload />
     </div>
   );
 }
