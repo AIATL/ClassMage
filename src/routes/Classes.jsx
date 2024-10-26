@@ -15,15 +15,6 @@ function Classes() {
         { id: 1, name: "CS 69420", documents: [] },
     ]);
 
-    const handleAddClass = () => {
-        const newClass = { id: Date.now(), name: "New Class", documents: [] };
-        setClasses([...classes, newClass]);
-    };
-
-    const handleDeleteClass = (classId) => {
-        setClasses(classes.filter((cls) => cls.id !== classId));
-    };
-
     return (
         <HeaderFooter>
             <div className="w-full h-full bg-white p-8 relative flex flex-col items-center">

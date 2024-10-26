@@ -4,6 +4,7 @@ import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import AuthForm from "./routes/AuthForm";
 import Classes from "./routes/Classes";
+import "@mantine/notifications/styles.css";
 import ChatPage from "./routes/ChatPage";
 import ClassResourceManagement from "./routes/ClassResourceManagement";
 import { createContext, useState } from "react";

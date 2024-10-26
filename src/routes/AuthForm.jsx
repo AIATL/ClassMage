@@ -92,20 +92,19 @@ function AuthForm() {
             onChange={(e) => setEmail(e.target.value)}
             classNames={{
               root: "",
-              input: "bg-white",
+              input: "bg-white ",
               label: "text-[#6e6e6e] text-lg font-bold font-['Poppins'] mb-2",
             }}
-            className="w-full"
           />
         </div>
 
         <div className="w-full">
-          <label className="text-[#6e6e6e] text-lg font-bold font-['Poppins'] mb-2">Password</label>
           <TextInput
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            label={"Password"}
             classNames={{
               root: "",
               input: "bg-white ",
