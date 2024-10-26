@@ -30,7 +30,7 @@ function AuthForm() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser && (currentUser.emailVerified || currentUser.providerData[0].providerId === 'google.com')) {
         setUser(currentUser);
-        navigate('/success');
+        navigate('/classes');
       } else {
         setUser(null);
       }
@@ -53,7 +53,7 @@ function AuthForm() {
     try {
       const loggedInUser = await loginWithEmail(email, password);
       setUser(loggedInUser);
-      navigate('/success');
+      navigate('/classes');
     } catch (error) {
       setErrorMessage('Invalid email or password. Please try again.');
     }
