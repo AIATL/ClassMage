@@ -6,9 +6,10 @@ import { UserContext } from './App';
 import { logout } from './auth';
 import FileUpload from './components/FileUpload';
 
+
 function SuccessPage() {
   const { user, setUser } = useContext(UserContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const handleLogout = async () => {
     try {
@@ -19,7 +20,7 @@ function SuccessPage() {
       console.error(`Logout failed: ${error.message}`);
     }
   };
-
+ // This component will display a success message upon successful registration and verification.
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
       <h1>Welcome, {user?.email}</h1>
