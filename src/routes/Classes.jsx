@@ -7,6 +7,7 @@ import { logout } from "../auth";
 import FileUpload from "../components/FileUpload";
 import loginPhoto from "../assets/loginphoto.avif";
 import HeaderFooter from "../components/HeaderFooter";
+import CreateClassModal from "../components/CreateClassModal";
 
 function Classes() {
     const { user, setUser } = useContext(UserContext);
@@ -47,6 +48,7 @@ function Classes() {
                     <div className="flex flex-col items-center justify-center w-[250px] h-[150px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer" onClick={handleAddClass}>
                         <h3 className="text-white text-2xl font-bold">Add Class</h3>
                     </div>
+                    <CreateClassModal />
                 </div>
             </div>
         </HeaderFooter>
