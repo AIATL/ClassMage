@@ -1,6 +1,7 @@
 from vertexai.preview import rag
 from vertexai.preview.generative_models import GenerativeModel, Tool
 import vertexai
+import re
 
 # Create a RAG Corpus, Import Files, and Generate a response
 
@@ -18,10 +19,15 @@ def loadRag(corpora):
     ragLookUp[corpora.display_name] = corpora
 
 def loadRags():
+    print(f" loading rags")
     corpora = rag.list_corpora()
 
+    i = 0
     for c in corpora:
+        i+=1
         loadRag(c)
+
+    print(f"finished loading {i} rags")
 
 
 loadRags()
@@ -62,7 +68,6 @@ def createNewRag(name):
     return rag_corpus
 
 def updateRagFiles(name):
-    print(f"creating new rag for {name}")
     paths = ["gs://coursemage-2db7f.appspot.com/" + name]
 
     print(f"updating rag files for {name}")
@@ -81,23 +86,24 @@ def updateRagFiles(name):
     print(f"skiped {response.skipped_rag_files_count} files.")
     print(f"completed update of rag files for {name}")
 
-def loadRagRetrival():
-    # Direct context retrieval
-    response = rag.retrieval_query(
-        rag_resources=[
-            rag.RagResource(
-                rag_corpus=rag_corpus.name,
-                # Optional: supply IDs from `rag.list_files()`.
-                # rag_file_ids=["rag-file-1", "rag-file-2", ...],
-            )
-        ],
-        text="What is the law of Universal Gravitation?",
-        similarity_top_k=10,  # Optional
-        vector_distance_threshold=0.5,  # Optional
-    )
-    print(f"dir {response}")
+# def loadRagRetrival():
+#     # Direct context retrieval
+#     response = rag.retrieval_query(
+#         rag_resources=[
+#             rag.RagResource(
+#                 rag_corpus=rag_corpus.name,
+#                 # Optional: supply IDs from `rag.list_files()`.
+#                 # rag_file_ids=["rag-file-1", "rag-file-2", ...],
+#             )
+#         ],
+#         text="What is the law of Universal Gravitation?",
+#         similarity_top_k=10,  # Optional
+#         vector_distance_threshold=0.5,  # Optional
+#     )
+#     print(f"dir {response}")
 
-def askRagQuestion():
+def askRagQuestion(name, query):
+    rag_corpus = ragLookUp[name]
     # Enhance generation
     # Create a RAG retrieval tool
     rag_retrieval_tool = Tool.from_retrieval(
@@ -121,9 +127,9 @@ def askRagQuestion():
     )
 
     # Generate response
-    response = rag_model.generate_content("What is the law of Universal Gravitation?")
-    print(response)
-    print(f"gemini{response.text}")
+    response = rag_model.generate_content(query)
+    # sources = rag_model.
+    print(f"grounding metadat")
+    sources = response.to_dict()["candidates"][0]["grounding_metadata"]["grounding_chunks"][0]["retrieved_context"]["uri"]
+    return response, sources
 
-
-createOrUpdateRag("theosTestClass")
