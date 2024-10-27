@@ -18,7 +18,6 @@ import "@cyntler/react-doc-viewer/dist/index.css";
 
 const ChatPage = () => {
     let { classId } = useParams();
-    classId = classId.replace("**", "/")
     const storedTopics = JSON.parse(
         localStorage.getItem("chatTopics" + classId)
     ) || [{ id: Date.now(), title: "Current Chat", messages: [] }];

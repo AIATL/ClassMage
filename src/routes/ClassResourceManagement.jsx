@@ -19,7 +19,7 @@ const ClassResourceManagement = () => {
             if (!user || !classId) return;
 
             const storage = getStorage();
-            const listRef = ref(storage, `${user.uid}/${classId}/`);
+            const listRef = ref(storage, `${user.uid}**${classId}/`);
 
             try {
                 const res = await listAll(listRef);
@@ -45,11 +45,12 @@ const ClassResourceManagement = () => {
 
     const handleCopyLink = () => {
         const chatLink = `${window.location.origin}/chat/${user.uid}**${classId}/`;
+        fetch(`${import.meta.env.VITE_FIREBASE_BACKEND_URL}/create_update_rag/${user.uid}**${classId}`, {method: "POST"})
         navigator.clipboard.writeText(chatLink)
             .then(() => {
                 notifications.show({
                     title: "Link Copied",
-                    message: "Chat link copied to clipboard!",
+                    message: "Chat link copied to clipboard! It may take 1 minute for RAG data to update",
                     color: "green",
                 });
             })
@@ -98,7 +99,7 @@ const ClassResourceManagement = () => {
 
                 {/* Copy Chat Link Button */}
                 <Button color="blue" onClick={handleCopyLink} className="mt-8">
-                    Copy Class Chat Link
+                    Copy Class Chat Link & Generate Rag
                 </Button>
             </div>
         </HeaderFooter>
