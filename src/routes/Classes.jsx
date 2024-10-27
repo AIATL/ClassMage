@@ -1,5 +1,4 @@
-// src/routes/Classes.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Button } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
@@ -11,7 +10,31 @@ import CreateClassModal from "../components/CreateClassModal";
 function Classes() {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const [classes, setClasses] = useState([]);
+
+    if (!user) {
+        navigate("/")
+    }
+
+    // Load classes from localStorage or initialize with a default class
+    const storedClasses = JSON.parse(localStorage.getItem("savedClasses")) || [];
+
+    const [classes, setClasses] = useState(storedClasses);
+
+    // Update localStorage whenever classes state changes
+    useEffect(() => {
+        localStorage.setItem("savedClasses", JSON.stringify(classes));
+    }, [classes]);
+
+    const addClass = (classId) => {
+        setClasses((prevClasses) => {return [
+            ...prevClasses,
+            {name: classId, classId: classId}
+        ]});
+    }
+
+    const handleDeleteClass = (classId) => {
+        setClasses((prevClasses) => prevClasses.filter((cls) => cls.id !== classId));
+    };
 
     return (
         <HeaderFooter>
@@ -26,20 +49,20 @@ function Classes() {
                         <div key={cls.id} className="flex flex-col w-[250px] bg-[#bab6bf] rounded-lg shadow-lg p-4">
                             <h3 className="text-center text-2xl font-bold text-[#6c3adb]">{cls.name}</h3>
                             <div className="mt-4">
-                            <Button
-    className="m-auto mb-2"
-    color="dark"
-    onClick={() => navigate(`/classes/${cls.name}`)}
->
-    Edit Class Information
-</Button>
+                                <Button
+                                    className="m-auto mb-2"
+                                    color="dark"
+                                    onClick={() => navigate(`/classes/${cls.name}`)}
+                                >
+                                    Edit Class Information
+                                </Button>
                                 <Button color="red" onClick={() => handleDeleteClass(cls.id)}>Delete</Button>
                             </div>
                         </div>
                     ))}
                     
-
-                    <CreateClassModal />
+                    {/* Add Class Button */}
+                    <CreateClassModal addClass={addClass} buttonClassName="w-[250px] h-[150px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer flex items-center justify-center text-white text-2xl font-bold"/>
                 </div>
             </div>
         </HeaderFooter>

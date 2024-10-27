@@ -1,34 +1,22 @@
 import { Button, Group, Modal, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { setUserClasses } from "../firebase";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
-const CreateClassModal = () => {
+const CreateClassModal = ({addClass}) => {
     const { user } = useContext(UserContext);
     const [opened, { open, close }] = useDisclosure(false);
 
-    const navigate = useNavigate();
 
-    if (!user) {
-        navigate("/");
-    }
-
-    function createNewClass(event) {
+    async function createNewClass(event) {
         event.preventDefault();
         const form = event.target;
         const formData = new FormData(form);
         const nameOfClass = formData.get("nameOfClass");
 
-        const cityRef = doc(db, "userOwnedClasses", user.uid);
-        console.log(cityRef);
-        setDoc(cityRef, { nameOfClasses: [nameOfClass] }, { merge: true })
-            .then((x) => console.log(x))
-            .catch((error) => {
-                console.error(error);
-            });
+        addClass(nameOfClass);
     }
 
     return (

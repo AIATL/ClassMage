@@ -65,7 +65,10 @@ const ChatPage = () => {
         setIsTyping(true);
 
         try {
-            const { response, source } = await fetchAIResponse(classId, input, priorQueries);
+            var { response, source } = await fetchAIResponse(classId, input, priorQueries);
+            if (typeof response == 'undefined') {
+                response = 'Please give me more info so that I can help you better.'
+            }
             const botMessage = {
                 sender: "CourseMage",
                 text: `${response}`,
