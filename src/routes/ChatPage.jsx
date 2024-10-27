@@ -7,7 +7,7 @@ import { fetchAIResponse } from "../utils/fetchAIResponse";
 import { useParams } from "react-router-dom";
 
 const ChatPage = () => {
-    const {classId} = useParams();
+    const { classId } = useParams();
     const storedTopics = JSON.parse(localStorage.getItem("chatTopics" + classId)) || [
         { id: Date.now(), title: "Current Chat", messages: [] },
     ];
@@ -35,14 +35,11 @@ const ChatPage = () => {
         setIsTyping(true);
 
         try {
-
-            console.log(classId);
             const { response, source } = await fetchAIResponse(classId, input, priorQueries);
             const botMessage = {
                 sender: "CourseMage",
                 text: `${response}`,
             };
-            console.log("from:", source);
             updateCurrentTopicMessages([...newMessages, botMessage]);
         } catch (error) {
             console.error("Error fetching AI response:", error);
@@ -56,9 +53,11 @@ const ChatPage = () => {
     };
 
     const updateCurrentTopicMessages = (newMessages) => {
-        const updatedTopics = topics.map((topic) =>
-            topic.id === currentTopic.id ? { ...topic, messages: newMessages } : topic
-        );
+        const updatedTopics = topics
+            .map((topic) =>
+                topic.id === currentTopic.id ? { ...topic, messages: newMessages } : topic
+            )
+            .sort((a, b) => (a.id === currentTopic.id ? -1 : b.id === currentTopic.id ? 1 : 0));
         setTopics(updatedTopics);
         setCurrentTopic((prev) => ({ ...prev, messages: newMessages }));
     };
@@ -69,7 +68,7 @@ const ChatPage = () => {
             title: newTopicName || `Topic ${topics.length + 1}`,
             messages: [],
         };
-        setTopics([...topics, newTopic]);
+        setTopics([newTopic, ...topics]); // Add new topic to the top of the list
         setCurrentTopic(newTopic);
         setNewTopicName("");
         setNewTopicModalOpen(false);
@@ -156,10 +155,11 @@ const ChatPage = () => {
                                         className={`${
                                             msg.sender === "User"
                                                 ? "bg-blue-500 text-white self-end"
-                                                : "bg-gray-200 text-black self-start"
-                                        } max-w-[75%] p-4 rounded-lg shadow-md`}
+                                                : "bg-gray-200 text-black self-start text-left"
+                                        } max-w-[75%] p-4 rounded-lg shadow-md whitespace-pre-line`}
+                                        style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}
                                     >
-                                        <strong>{msg.sender}:</strong> {msg.text}
+                                        <p>{msg.text}</p>
                                     </div>
                                 </div>
                             ))}

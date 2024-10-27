@@ -33,7 +33,7 @@ function Classes() {
     color="dark"
     onClick={() => navigate(`/classes/${cls.name}`)}
 >
-    Edit Grounding Content
+    Edit Class Information
 </Button>
                                 <Button color="red" onClick={() => handleDeleteClass(cls.id)}>Delete</Button>
                             </div>
