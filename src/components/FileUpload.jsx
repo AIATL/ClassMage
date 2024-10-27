@@ -23,7 +23,7 @@ function FileUpload() {
     
     try {
       const storage = getStorage();
-      const storageRef = ref(storage, `${user.uid}**${classId}/${file.name}`);
+      const storageRef = ref(storage, `${user.uid}%2A%2A${classId}/${file.name}`);
       // Upload the file to Firebase Storage
       await uploadBytes(storageRef, file);
       await getDownloadURL(storageRef);

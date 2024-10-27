@@ -19,7 +19,7 @@ const ClassResourceManagement = () => {
             if (!user || !classId) return;
 
             const storage = getStorage();
-            const listRef = ref(storage, `${user.uid}**${classId}/`);
+            const listRef = ref(storage, `${user.uid}%2A%2A${classId}/`);
 
             try {
                 const res = await listAll(listRef);
@@ -44,8 +44,8 @@ const ClassResourceManagement = () => {
     }, [user, classId]);
 
     const handleCopyLink = () => {
-        const chatLink = `${window.location.origin}/chat/${user.uid}**${classId}/`;
-        fetch(`${import.meta.env.VITE_FIREBASE_BACKEND_URL}/create_update_rag/${user.uid}**${classId}`, {method: "POST"})
+        const chatLink = `${window.location.origin}/chat/${user.uid}%2A%2A${classId}/`;
+        fetch(`${import.meta.env.VITE_FIREBASE_BACKEND_URL}/create_update_rag/${user.uid}%2A%2A${classId}`, {method: "POST"})
         navigator.clipboard.writeText(chatLink)
             .then(() => {
                 notifications.show({
