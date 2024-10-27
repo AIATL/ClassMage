@@ -7,7 +7,7 @@ from google.oauth2 import service_account
 import os
 from dotenv import load_dotenv
 
-load_dotenv(os.environ.get("GOOGLE_CLOUD_JSON"))
+load_dotenv()
 
 json_account_info = json.loads(os.environ.get("GOOGLE_CLOUD_JSON"))  # convert JSON to dictionary
 print(json_account_info)
