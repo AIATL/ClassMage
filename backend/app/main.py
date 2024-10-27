@@ -14,6 +14,9 @@ print(json_account_info)
 credentials = service_account.Credentials.from_service_account_info(
     json_account_info)
 
+scoped_credentials = credentials.with_scopes(
+    ['https://www.googleapis.com/auth/cloud-platform'])
+
 # Create a RAG Corpus, Import Files, and Generate a response
 
 # TODO(developer): Update and un-comment below lines
