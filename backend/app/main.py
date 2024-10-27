@@ -11,11 +11,10 @@ load_dotenv(os.environ.get("GOOGLE_CLOUD_JSON"))
 
 json_account_info = json.loads(os.environ.get("GOOGLE_CLOUD_JSON"))  # convert JSON to dictionary
 print(json_account_info)
-credentials = service_account.Credentials.from_service_account_info(
-    json_account_info)
 
-scoped_credentials = credentials.with_scopes(
-    ['https://www.googleapis.com/auth/cloud-platform'])
+credentials = service_account.Credentials.from_service_account_info(
+    json_acct_info))
+
 
 # Create a RAG Corpus, Import Files, and Generate a response
 
