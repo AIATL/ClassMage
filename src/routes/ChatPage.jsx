@@ -1,16 +1,26 @@
 // src/routes/ChatPage.jsx
 import { useState, useEffect } from "react";
-import { Button, TextInput, ScrollArea, Modal, Loader, ActionIcon } from "@mantine/core";
+import {
+    Button,
+    TextInput,
+    ScrollArea,
+    Modal,
+    Loader,
+    ActionIcon,
+} from "@mantine/core";
 import { IconSend, IconTrash } from "@tabler/icons-react";
 import mageHatIcon from "/src/assets/MageHat1.png"; // Icon for CourseMage
 import { fetchAIResponse } from "../utils/fetchAIResponse";
 import { useParams } from "react-router-dom";
+import { getFirebaseFileUrl } from "../firebase";
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import "@cyntler/react-doc-viewer/dist/index.css";
 
 const ChatPage = () => {
-    const { classId } = useParams();
-    const storedTopics = JSON.parse(localStorage.getItem("chatTopics" + classId)) || [
-        { id: Date.now(), title: "Current Chat", messages: [] },
-    ];
+    const {  classId  } = useParams();
+    const storedTopics = JSON.parse(
+        localStorage.getItem("chatTopics" + classId)
+    ) || [{ id: Date.now(), title: "Current Chat", messages: [] }];
     const [topics, setTopics] = useState(storedTopics);
     const [currentTopic, setCurrentTopic] = useState(storedTopics[0]);
     const [input, setInput] = useState("");
@@ -18,12 +28,32 @@ const ChatPage = () => {
     const [newTopicModalOpen, setNewTopicModalOpen] = useState(false);
     const [newTopicName, setNewTopicName] = useState("");
     const [showDeleteOptions, setShowDeleteOptions] = useState(false);
+    const [urlToEmbed, setUrlToEmbed] = useState(null);
 
     useEffect(() => {
         localStorage.setItem("chatTopics" + classId, JSON.stringify(topics));
     }, [topics]);
 
     const messages = currentTopic?.messages || [];
+
+    const updateUrlToEmbed = async (newUrl) => {
+        if (newUrl == null) {
+            setUrlToEmbed(null);
+            return;
+        }
+        const url = await getFirebaseFileUrl(newUrl);
+        let fileContext = null;
+        if (!!url) {
+            fileContext = (
+                <div>
+                    <DocViewer
+                        documents={[{ uri: url }]}
+                    />
+                </div>
+            );
+            setUrlToEmbed(fileContext);
+        }
+    };
 
     const handleSendMessage = async (event) => {
         event.preventDefault();
@@ -40,12 +70,16 @@ const ChatPage = () => {
                 sender: "CourseMage",
                 text: `${response}`,
             };
+            updateUrlToEmbed(source);
             updateCurrentTopicMessages([...newMessages, botMessage]);
         } catch (error) {
             console.error("Error fetching AI response:", error);
             updateCurrentTopicMessages([
                 ...newMessages,
-                { sender: "CourseMage", text: "I'm having trouble retrieving the answer. Please try again later." },
+                {
+                    sender: "CourseMage",
+                    text: "I'm having trouble retrieving the answer. Please try again later.",
+                },
             ]);
         } finally {
             setIsTyping(false);
@@ -55,7 +89,9 @@ const ChatPage = () => {
     const updateCurrentTopicMessages = (newMessages) => {
         const updatedTopics = topics
             .map((topic) =>
-                topic.id === currentTopic.id ? { ...topic, messages: newMessages } : topic
+                topic.id === currentTopic.id
+                ? { ...topic, messages: newMessages }
+                : topic
             )
             .sort((a, b) => (a.id === currentTopic.id ? -1 : b.id === currentTopic.id ? 1 : 0));
         setTopics(updatedTopics);
@@ -72,6 +108,7 @@ const ChatPage = () => {
         setCurrentTopic(newTopic);
         setNewTopicName("");
         setNewTopicModalOpen(false);
+        setUrlToEmbed(null);
     };
 
     const handleDeleteTopic = (topicId) => {
@@ -94,7 +131,10 @@ const ChatPage = () => {
                         {topics.map((topic) => (
                             <div
                                 key={topic.id}
-                                onClick={() => setCurrentTopic(topic)}
+                                onClick={() => {
+                                    setUrlToEmbed(null);
+                                    setCurrentTopic(topic);
+                                }}
                                 className={`cursor-pointer p-2 rounded-md flex items-center justify-between ${
                                     topic.id === currentTopic.id
                                         ? "bg-white text-[#6c3adb]"
@@ -117,7 +157,10 @@ const ChatPage = () => {
                         ))}
                     </div>
                 </ScrollArea>
-                <Button onClick={() => setNewTopicModalOpen(true)} className="mt-6 bg-white text-[#6c3adb]">
+                <Button
+                    onClick={() => setNewTopicModalOpen(true)}
+                    className="mt-6 bg-white text-[#6c3adb]"
+                >
                     Start New Topic
                 </Button>
                 <Button
@@ -165,25 +208,37 @@ const ChatPage = () => {
                             ))}
                             {isTyping && (
                                 <div className="flex items-center justify-start">
-                                    <img src={mageHatIcon} alt="CourseMage Typing" className="w-8 h-8 mr-2" />
+                                    <img
+                                        src={mageHatIcon}
+                                        alt="CourseMage Typing"
+                                        className="w-8 h-8 mr-2"
+                                    />
                                     <div className="bg-gray-200 text-black p-4 rounded-lg shadow-md">
                                         <Loader size="xs" color="blue" />
                                     </div>
                                 </div>
                             )}
+                            {urlToEmbed}
                         </div>
                     </ScrollArea>
                 </div>
 
                 {/* Chat Input */}
-                <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-gray-200 flex items-center">
+                <form
+                    onSubmit={handleSendMessage}
+                    className="p-4 bg-white border-t border-gray-200 flex items-center"
+                >
                     <TextInput
                         placeholder="Type your message here..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         className="flex-grow mr-4"
                     />
-                    <Button color="blue" type="submit" leftIcon={<IconSend size={18} />}>
+                    <Button
+                        color="blue"
+                        type="submit"
+                        leftIcon={<IconSend size={18} />}
+                    >
                         Send
                     </Button>
                 </form>
@@ -201,7 +256,11 @@ const ChatPage = () => {
                     value={newTopicName}
                     onChange={(event) => setNewTopicName(event.target.value)}
                 />
-                <Button onClick={handleCreateNewTopic} className="mt-4" fullWidth>
+                <Button
+                    onClick={handleCreateNewTopic}
+                    className="mt-4"
+                    fullWidth
+                >
                     Create Topic
                 </Button>
             </Modal>
