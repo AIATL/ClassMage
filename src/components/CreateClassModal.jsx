@@ -1,47 +1,45 @@
-import { Button, Group, Modal, TextInput } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
-import { useContext } from "react";
-import { UserContext } from "../App";
+import React, { useState } from "react";
+import { Button, Modal, TextInput } from "@mantine/core";
 
-const CreateClassModal = () => {
-    const {user} = useContext(UserContext)
-    const [opened, { open, close }] = useDisclosure(false);
+function CreateClassModal({ onAddClass, buttonClassName }) {
+    const [opened, setOpened] = useState(false);
+    const [className, setClassName] = useState("");
 
-    function createNewClass(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const nameOfClass = formData.get("nameOfClass");
-
-        const cityRef = doc(db, "userOwnedClasses", user.id);
-        setDoc(cityRef, { nameOfClass: [nameOfClass]}, { merge: true });
-    }
+    const handleCreate = () => {
+        if (className.trim()) {
+            const newClass = {
+                id: Date.now(),
+                name: className,
+                documents: [],
+            };
+            onAddClass(newClass);  // Pass the new class data back to Classes component
+            setClassName("");      // Clear input
+            setOpened(false);      // Close modal
+        }
+    };
 
     return (
         <>
-            <Modal title="Create Class" opened={opened} onClose={close}>
-                <form onSubmit={createNewClass}>
-                    <TextInput name="nameOfClass" label="Name of Class" />
-                    <Group className="m-2" justify="flex-end">
-                        <Button color="lightgrey" onClick={close}>
-                            Discard
-                        </Button>
-                        <Button type="submit">Create</Button>
-                    </Group>
-                </form>
-            </Modal>
-            {/* Add Class Option */}
-            <button
-                className="py-4 text-white flex flex-col items-center justify-center w-[250px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer"
-                onClick={open}
-            >
-                +<br />
+            <div onClick={() => setOpened(true)} className={buttonClassName}>
                 Add Class
-            </button>
+            </div>
+            <Modal
+                opened={opened}
+                onClose={() => setOpened(false)}
+                title="Enter Class Name"
+                centered
+            >
+                <TextInput
+                    placeholder="Class Name"
+                    value={className}
+                    onChange={(event) => setClassName(event.target.value)}
+                />
+                <Button onClick={handleCreate} className="mt-4" fullWidth>
+                    Create
+                </Button>
+            </Modal>
         </>
     );
-};
+}
 
 export default CreateClassModal;

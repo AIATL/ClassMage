@@ -4,11 +4,18 @@ import { Button, FileInput, Notification } from "@mantine/core";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { notifications } from "@mantine/notifications";
 import { UserContext } from '../App';
+import { useParams, useNavigate } from "react-router-dom";
 
-function FileUpload({ classId }) {
+function FileUpload() {
+  const { classId } = useParams();
   const {user} = useContext(UserContext);
   const [file, setFile] = useState(null);
   const [fileUploadMessage, setFileUploadMessage] = useState("");
+  const navigate = useNavigate();
+
+  if (!user) {
+    navigate("/")
+  }
 
   const handleFileUpload = async () => {
     if (!file || !classId) return; // Ensure file and classId are set

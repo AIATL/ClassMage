@@ -11,7 +11,7 @@ import {
   sendEmailVerification, 
   fetchSignInMethodsForEmail 
 } from "firebase/auth";
-import { getStorage, gsReference, getDownloadURL } from "firebase/storage"; // Import Firebase Storage
+import { getStorage, getDownloadURL } from "firebase/storage"; // Import Firebase Storage
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
