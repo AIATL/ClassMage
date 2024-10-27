@@ -13,11 +13,12 @@ import mageHatIcon from "/src/assets/MageHat1.png"; // Icon for CourseMage
 import { fetchAIResponse } from "../utils/fetchAIResponse";
 import { useParams } from "react-router-dom";
 import { getFirebaseFileUrl } from "../firebase";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import DocViewer from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
 
 const ChatPage = () => {
-    const {  classId  } = useParams();
+    let { classId } = useParams();
+    classId = classId.replace("**", "/")
     const storedTopics = JSON.parse(
         localStorage.getItem("chatTopics" + classId)
     ) || [{ id: Date.now(), title: "Current Chat", messages: [] }];

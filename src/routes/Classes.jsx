@@ -62,7 +62,7 @@ function Classes() {
                     ))}
                     
                     {/* Add Class Button */}
-                    <CreateClassModal addClass={addClass} buttonClassName="w-[250px] h-[150px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer flex items-center justify-center text-white text-2xl font-bold"/>
+                    <CreateClassModal addClass={addClass} />
                 </div>
             </div>
         </HeaderFooter>

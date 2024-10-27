@@ -44,7 +44,7 @@ const ClassResourceManagement = () => {
     }, [user, classId]);
 
     const handleCopyLink = () => {
-        const chatLink = `${window.location.origin}/chat/${classId}`;
+        const chatLink = `${window.location.origin}/chat/${user.uid}**${classId}/`;
         navigator.clipboard.writeText(chatLink)
             .then(() => {
                 notifications.show({

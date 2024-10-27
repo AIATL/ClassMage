@@ -1,13 +1,8 @@
 import { Button, Group, Modal, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { setUserClasses } from "../firebase";
-import { useContext } from "react";
-import { UserContext } from "../App";
-import { useNavigate } from "react-router-dom";
 
-const CreateClassModal = ({addClass}) => {
+const CreateClassModal = ({ addClass }) => {
     const [opened, { open, close }] = useDisclosure(false);
-
 
     async function createNewClass(event) {
         event.preventDefault();
@@ -23,23 +18,32 @@ const CreateClassModal = ({addClass}) => {
         <>
             <Modal
                 opened={opened}
-                onClose={() => setOpened(false)}
+                onClose={close}
                 title="Enter Class Name"
                 centered
+                onSubmit={createNewClass}
             >
-                <TextInput
-                    placeholder="Class Name"
-                    value={className}
-                    onChange={(event) => setClassName(event.target.value)}
-                /><Button onClick={close} color="lightgrey" className="mt-4 " fullWidth>
+                <form>
+                <TextInput name="nameOfClass" placeholder="Class Name" />
+                <Group>
+                <Button
+                    onClick={close}
+                    color="lightgrey"
+                    className="mt-4 "
+                >
                     Discard
                 </Button>
-                <Button onClick={createNewClass} className="mt-4" fullWidth>
+                <Button type="submit" className="mt-4" >
                     Create
                 </Button>
+                </Group>
+                </form>
             </Modal>
+            <button onClick={open} className="w-[250px] h-[150px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer flex items-center justify-center text-white text-2xl font-bold">+<br />
+                Create Class
+            </button>
         </>
     );
-}
+};
 
 export default CreateClassModal;
