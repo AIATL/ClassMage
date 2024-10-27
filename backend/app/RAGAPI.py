@@ -1,8 +1,20 @@
 from fastapi import FastAPI, HTTPException, Query
+import createJson
 from main import createOrUpdateRag, askRagQuestion
 import json
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/create_update_rag/{ragname}")
 async def create_update_rag(ragname: str):
