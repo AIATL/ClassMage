@@ -21,27 +21,26 @@ const CreateClassModal = ({addClass}) => {
 
     return (
         <>
-            <Modal title="Create Class" opened={opened} onClose={close}>
-                <form onSubmit={createNewClass}>
-                    <TextInput name="nameOfClass" label="Name of Class" />
-                    <Group className="m-2" justify="flex-end">
-                        <Button color="lightgrey" onClick={close}>
-                            Discard
-                        </Button>
-                        <Button type="submit">Create</Button>
-                    </Group>
-                </form>
-            </Modal>
-            {/* Add Class Option */}
-            <button
-                className="py-4 text-white flex flex-col items-center justify-center w-[250px] bg-[#6c3adb] rounded-lg shadow-lg cursor-pointer"
-                onClick={open}
-            >
-                +<br />
+            <div onClick={() => setOpened(true)} className={buttonClassName}>
                 Add Class
-            </button>
+            </div>
+            <Modal
+                opened={opened}
+                onClose={() => setOpened(false)}
+                title="Enter Class Name"
+                centered
+            >
+                <TextInput
+                    placeholder="Class Name"
+                    value={className}
+                    onChange={(event) => setClassName(event.target.value)}
+                />
+                <Button onClick={handleCreate} className="mt-4" fullWidth>
+                    Create
+                </Button>
+            </Modal>
         </>
     );
-};
+}
 
 export default CreateClassModal;
