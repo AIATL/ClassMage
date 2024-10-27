@@ -29,7 +29,7 @@ const HeaderFooter = ({ children }) => {
             <Notifications position="top-right" />
             <main className="flex-grow">{children}</main>
             <footer className="fixed bottom-0 w-full h-[50px] bg-[#6c3adb] flex items-center justify-center text-white">
-                Like us on <a href="">DevPost</a>
+                Like us on <a href="https://devpost.com/software/classmage">DevPost</a>
             </footer>
         </>
     );
