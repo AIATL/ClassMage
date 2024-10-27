@@ -6,7 +6,6 @@ import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
 const CreateClassModal = ({addClass}) => {
-    const { user } = useContext(UserContext);
     const [opened, { open, close }] = useDisclosure(false);
 
 
@@ -17,13 +16,11 @@ const CreateClassModal = ({addClass}) => {
         const nameOfClass = formData.get("nameOfClass");
 
         addClass(nameOfClass);
+        close();
     }
 
     return (
         <>
-            <div onClick={() => setOpened(true)} className={buttonClassName}>
-                Add Class
-            </div>
             <Modal
                 opened={opened}
                 onClose={() => setOpened(false)}
@@ -34,8 +31,10 @@ const CreateClassModal = ({addClass}) => {
                     placeholder="Class Name"
                     value={className}
                     onChange={(event) => setClassName(event.target.value)}
-                />
-                <Button onClick={handleCreate} className="mt-4" fullWidth>
+                /><Button onClick={close} color="lightgrey" className="mt-4 " fullWidth>
+                    Discard
+                </Button>
+                <Button onClick={createNewClass} className="mt-4" fullWidth>
                     Create
                 </Button>
             </Modal>
