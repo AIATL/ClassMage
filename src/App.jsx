@@ -8,7 +8,7 @@ import "@mantine/notifications/styles.css";
 import ChatPage from "./routes/ChatPage";
 import ClassResourceManagement from "./routes/ClassResourceManagement";
 import { createContext, useState } from "react";
-import "./App.css";
+
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
