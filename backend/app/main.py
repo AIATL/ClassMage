@@ -3,6 +3,16 @@ from vertexai.preview.generative_models import GenerativeModel, Tool
 import vertexai
 import json
 
+from google.oauth1 import service_account
+import os
+from dotenv import load_dotenv
+
+load_dotenv(os.environ.get("GOOGLE_CLOUD_JSON"))
+
+json_account_info = json.loads()  # convert JSON to dictionary
+credentials = service_account.Credentials.from_service_account_info(
+    json_account_info)
+
 # Create a RAG Corpus, Import Files, and Generate a response
 
 # TODO(developer): Update and un-comment below lines
