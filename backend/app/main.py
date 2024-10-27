@@ -3,7 +3,7 @@ from vertexai.preview.generative_models import GenerativeModel, Tool
 import vertexai
 import json
 
-from google.oauth1 import service_account
+from google.oauth2 import service_account
 import os
 from dotenv import load_dotenv
 
