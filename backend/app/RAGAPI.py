@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Query
+import createJson
 from main import createOrUpdateRag, askRagQuestion
 import json
 
