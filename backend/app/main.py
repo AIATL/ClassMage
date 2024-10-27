@@ -14,7 +14,6 @@ print(json_account_info)
 
 credentials = service_account.Credentials.from_service_account_info(json_account_info)
 
-
 # Create a RAG Corpus, Import Files, and Generate a response
 
 # TODO(developer): Update and un-comment below lines
@@ -143,7 +142,22 @@ def askRagQuestion(name, query, priorqueries):
             final = json.dumps(priorqueries, indent=4)
     except:
         final = priorqueries
-    query_final = "You are a tutor for a class that I am a student of. This is the list of prior questions that I have asked: \n" + final + "\n use these prior questions as context and do not bring up that i've asked you anything before unless necessary to make the answer to the current question clearer: " + query + "\nExpand on this question with as clear of an explanation as possible while not repeating yourself but give an example or two if it will make the concept clearer."
+    query_final = f"""
+            **Context:**
+            use this list of prior queries:
+            {priorqueries}
+            to answer the following query:
+            {query}
+            **Instruction:**
+            do not include asterisks or slashes. Give the student one example of the explanation of the query,
+            do not exceed more than 1 paragraph or 150 words.
+            
+            Please ensure your response is:
+            * Clear and concise
+            * Informative and helpful
+            * Free of self-references
+            * Tailored to the specific context and instruction
+            """
     response = rag_model.generate_content(query_final)
     sources = response.to_dict()["candidates"][0]["grounding_metadata"]["grounding_chunks"][0]["retrieved_context"]["uri"]
     return response, sources

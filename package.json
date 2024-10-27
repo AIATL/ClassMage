@@ -12,6 +12,7 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
+    "@cyntler/react-doc-viewer": "^1.17.0",
     "@mantine/core": "^7.13.4",
     "@mantine/form": "^7.13.4",
     "@mantine/hooks": "^7.13.4",
