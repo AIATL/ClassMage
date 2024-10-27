@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import { Button, TextInput, ScrollArea, Modal, Loader, ActionIcon } from "@mantine/core";
 import { IconSend, IconTrash } from "@tabler/icons-react";
 import mageHatIcon from "/src/assets/MageHat1.png"; // Icon for CourseMage
+import { fetchAIResponse } from "../utils/fetchAIResponse";
+import { useParams } from "react-router-dom";
 
 const ChatPage = () => {
-    // Load topics from localStorage if they exist; otherwise, use a default topic
-    const storedTopics = JSON.parse(localStorage.getItem("chatTopics")) || [
+    const {classId} = useParams();
+    const storedTopics = JSON.parse(localStorage.getItem("chatTopics" + classId)) || [
         { id: Date.now(), title: "Current Chat", messages: [] },
     ];
     const [topics, setTopics] = useState(storedTopics);
@@ -17,33 +19,40 @@ const ChatPage = () => {
     const [newTopicName, setNewTopicName] = useState("");
     const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
-    // Effect to save topics to localStorage whenever they change
     useEffect(() => {
-        localStorage.setItem("chatTopics", JSON.stringify(topics));
+        localStorage.setItem("chatTopics" + classId, JSON.stringify(topics));
     }, [topics]);
 
-    // Ensure messages have a fallback to an empty array
     const messages = currentTopic?.messages || [];
 
-    const handleSendMessage = (event) => {
+    const handleSendMessage = async (event) => {
         event.preventDefault();
-        if (input.trim()) {
-            const newMessages = [...messages, { sender: "User", text: input }];
-            updateCurrentTopicMessages(newMessages);
-            setInput("");
-            simulateBotResponse(newMessages);
-        }
-    };
-
-    const simulateBotResponse = (newMessages) => {
+        if (!input.trim()) return;
+        const priorQueries = currentTopic;
+        const newMessages = [...messages, { sender: "User", text: input }];
+        updateCurrentTopicMessages(newMessages);
+        setInput("");
         setIsTyping(true);
-        setTimeout(() => {
-            setIsTyping(false);
+
+        try {
+
+            console.log(classId);
+            const { response, source } = await fetchAIResponse(classId, input, priorQueries);
+            const botMessage = {
+                sender: "CourseMage",
+                text: `${response}`,
+            };
+            console.log("from:", source);
+            updateCurrentTopicMessages([...newMessages, botMessage]);
+        } catch (error) {
+            console.error("Error fetching AI response:", error);
             updateCurrentTopicMessages([
                 ...newMessages,
-                { sender: "CourseMage", text: "I don't have the AI integrated yet!" },
+                { sender: "CourseMage", text: "I'm having trouble retrieving the answer. Please try again later." },
             ]);
-        }, 1000);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
     const updateCurrentTopicMessages = (newMessages) => {
@@ -62,8 +71,8 @@ const ChatPage = () => {
         };
         setTopics([...topics, newTopic]);
         setCurrentTopic(newTopic);
-        setNewTopicName(""); // Reset topic name input
-        setNewTopicModalOpen(false); // Close modal
+        setNewTopicName("");
+        setNewTopicModalOpen(false);
     };
 
     const handleDeleteTopic = (topicId) => {

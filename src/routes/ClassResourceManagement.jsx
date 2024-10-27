@@ -40,8 +40,8 @@ const ClassResourceManagement = () => {
                 
                 {/* File Upload Section */}
                 <div className="w-full flex justify-center items-center mb-8">
-                    <FileUpload />
-                </div>
+    <FileUpload classId={classId} />
+</div>
 
                 {/* Copy Chat Link Button */}
                 <Button color="blue" onClick={handleCopyLink}>

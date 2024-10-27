@@ -28,7 +28,13 @@ function Classes() {
                         <div key={cls.id} className="flex flex-col w-[250px] bg-[#bab6bf] rounded-lg shadow-lg p-4">
                             <h3 className="text-center text-2xl font-bold text-[#6c3adb]">{cls.name}</h3>
                             <div className="mt-4">
-                                <Button className="m-auto mb-2" color="dark" onClick={() => {navigate("/classes/") + cls.name}} >Edit Grounding Content</Button>
+                            <Button
+    className="m-auto mb-2"
+    color="dark"
+    onClick={() => navigate(`/classes/${cls.name}`)}
+>
+    Edit Grounding Content
+</Button>
                                 <Button color="red" onClick={() => handleDeleteClass(cls.id)}>Delete</Button>
                             </div>
                         </div>
