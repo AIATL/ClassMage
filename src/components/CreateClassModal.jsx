@@ -4,10 +4,17 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useContext } from "react";
 import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const CreateClassModal = () => {
-    const {user} = useContext(UserContext)
+    const { user } = useContext(UserContext);
     const [opened, { open, close }] = useDisclosure(false);
+
+    const navigate = useNavigate();
+
+    if (!user) {
+        navigate("/");
+    }
 
     function createNewClass(event) {
         event.preventDefault();
@@ -15,8 +22,13 @@ const CreateClassModal = () => {
         const formData = new FormData(form);
         const nameOfClass = formData.get("nameOfClass");
 
-        const cityRef = doc(db, "userOwnedClasses", user.id);
-        setDoc(cityRef, { nameOfClass: [nameOfClass]}, { merge: true });
+        const cityRef = doc(db, "userOwnedClasses", user.uid);
+        console.log(cityRef);
+        setDoc(cityRef, { nameOfClasses: [nameOfClass] }, { merge: true })
+            .then((x) => console.log(x))
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     return (

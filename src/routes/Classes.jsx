@@ -11,9 +11,7 @@ import CreateClassModal from "../components/CreateClassModal";
 function Classes() {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const [classes, setClasses] = useState([
-        { id: 1, name: "CS 69420", documents: [] },
-    ]);
+    const [classes, setClasses] = useState([]);
 
     return (
         <HeaderFooter>
