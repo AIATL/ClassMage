@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv(os.environ.get("GOOGLE_CLOUD_JSON"))
 
 json_account_info = json.loads(os.environ.get("GOOGLE_CLOUD_JSON"))  # convert JSON to dictionary
+print(json_account_info)
 credentials = service_account.Credentials.from_service_account_info(
     json_account_info)
 
