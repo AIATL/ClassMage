@@ -11,7 +11,7 @@ import {
   sendEmailVerification, 
   fetchSignInMethodsForEmail 
 } from "firebase/auth";
-import { getStorage } from "firebase/storage"; // Import Firebase Storage
+import { getStorage, gsReference, getDownloadURL } from "firebase/storage"; // Import Firebase Storage
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -31,6 +31,11 @@ const googleProvider = new GoogleAuthProvider();
 const storage = getStorage(app); // Initialize Firebase Storage
 const db = getFirestore(app);
 
+const getFirebaseFileUrl = async (file) => {
+  const gsReference = gsReference(storage, file);
+  return await getDownloadURL(gsReference)
+}
+
 export { 
     app, 
     analytics, 
@@ -44,4 +49,5 @@ export {
     sendEmailVerification, 
     fetchSignInMethodsForEmail,
     db,
-};
+    getFirebaseFileUrl
+  };
