@@ -128,7 +128,7 @@ const ChatPage = () => {
         <div className="w-full h-screen flex bg-gray-100">
             {/* Sidebar for Chat Topics */}
             <div className="w-1/4 h-full bg-[#6c3adb] text-white flex flex-col p-4">
-                <h2 className="text-xl font-bold mb-6">Chat Topics</h2>
+                <h2 className="text-xl font-bold mb-6">{classId.split("**")[1] +" "}Chat Topics</h2>
                 <ScrollArea style={{ flexGrow: 1 }}>
                     <div className="space-y-2">
                         {topics.map((topic) => (
